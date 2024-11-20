@@ -1,5 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
 /* appearance */
 static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -59,17 +60,34 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-// static const char *termcmd[]  = { "ghostty", NULL };
+static const char *termcmd[]  = { "ghostty", NULL };
 // static const char *termcmd[]  = { "st", NULL };
-static const char *termcmd[]  = { "wezterm", NULL };
-static const char *flameshotcmd[] = {"flameshot", "gui", "-c", "-p", "~/Pictures/Screenshots/" };
+// static const char *termcmd[]  = { "wezterm", NULL };
+static const char *flameshotcmd[] = {"flameshot", "gui"};
 static const char *webbrowsercmd[] = { "chromium" , NULL };
 
+
+static const char *brightness_up[] = { "/bin/sh", "-c", 
+    "brightnessctl set +5% && notify-send 'Brightness' $(brightnessctl g | awk '{printf(\"%d%%\", $1 / $(brightnessctl m) * 100)}')", NULL };
+static const char *brightness_down[] = { "/bin/sh", "-c", 
+    "brightnessctl set 5%- && notify-send 'Brightness' $(brightnessctl g | awk '{printf(\"%d%%\", $1 / $(brightnessctl m) * 100)}')", NULL };
+
+
+static const char *volume_up[]          = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *volume_down[]        = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
+static const char *volume_toggle[]      = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *kbd_brightness_up[]  = { "bash", "-c", 
+    "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); max=$(cat /sys/class/leds/tpacpi::kbd_backlight/max_brightness); if [ $cur -lt $max ]; then echo $((cur+1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
+static const char *kbd_brightness_down[] = { "bash", "-c", 
+    "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); if [ $cur -gt 0 ]; then echo $((cur-1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
+
+static const char *roficmd[] = { "rofi", "-show", "drun", "-show-icons" };
 
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	// { MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = roficmd} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -104,6 +122,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+    { 0,                            XF86XK_MonBrightnessUp,     spawn,          {.v = brightness_up } },
+    { 0,                            XF86XK_MonBrightnessDown,   spawn,          {.v = brightness_down } },
+    { 0,                            XF86XK_AudioRaiseVolume,    spawn,          {.v = volume_up } },
+    { 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = volume_down } },
+    { 0,                            XF86XK_AudioMute,           spawn,          {.v = volume_toggle } },
+    { 0,                            XF86XK_KbdBrightnessUp,     spawn,          {.v = kbd_brightness_up } },
+    { 0,                            XF86XK_KbdBrightnessDown,   spawn,          {.v = kbd_brightness_down } },
 };
 
 /* button definitions */
