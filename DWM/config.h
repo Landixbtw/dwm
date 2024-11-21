@@ -1,18 +1,21 @@
 /* See LICENSE file for copyright and license details. */
 
 #include <X11/XF86keysym.h>
+
+
 /* appearance */
 static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10", "JetBrainsMonoNL NFM:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "GeistMono NF:size=11", "JetBrainsMonoNL NFM:size=11" };
+static const char dmenufont[]       = "GeistMono NF:size=11";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -27,10 +30,9 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,         0,              1,          -1 },
-	{ "Chromium",  NULL,       NULL,        2,              0,          -1 },
-	{ "Discord",  NULL,       "Vesktop",        4,              0,          -1 },
+	/* class        instance    title                           tags mask       isfloating   monitor */
+	{ "Discord",    NULL,       "Vesktop",                      4,                  0,          -1 },
+    { "Firefox",    NULL,       "Firefox Preferences",          1 << 8,             1,       -1 },
 };
 
 /* layout(s) */
@@ -63,21 +65,56 @@ static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray
 static const char *termcmd[]  = { "ghostty", NULL };
 // static const char *termcmd[]  = { "st", NULL };
 // static const char *termcmd[]  = { "wezterm", NULL };
-static const char *flameshotcmd[] = {"flameshot", "gui"};
+static const char *flameshotcmd[] = {"flameshot", "gui", "-c", "-p", "/home/ole//Pictures/" ,NULL};
 static const char *webbrowsercmd[] = { "chromium" , NULL };
 
+/* Add these at the top of your config.h, after the includes and before your variables */
+#define VOLUME_STEP "5"
+#define BRIGHTNESS_STEP "5"
+#define BAR_LENGTH 15  /* reduced bar length for more compact look */
+#define stringify(s) stringify_(s)
+#define stringify_(s) #s
 
-static const char *brightness_up[] = { "/bin/sh", "-c", 
-    "brightnessctl set +5% && notify-send 'Brightness' $(brightnessctl g | awk '{printf(\"%d%%\", $1 / $(brightnessctl m) * 100)}')", NULL };
-static const char *brightness_down[] = { "/bin/sh", "-c", 
-    "brightnessctl set 5%- && notify-send 'Brightness' $(brightnessctl g | awk '{printf(\"%d%%\", $1 / $(brightnessctl m) * 100)}')", NULL };
+/* Your volume and brightness commands */
+static const char *volume_up[] = { "/bin/sh", "-c",
+    "VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]{1,3}(?=%)' | head -1) && "\
+    "[ $VOL -le 95 ] && pactl set-sink-volume @DEFAULT_SINK@ +" VOLUME_STEP "% || pactl set-sink-volume @DEFAULT_SINK@ 100% && "\
+    "VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]{1,3}(?=%)' | head -1) && "\
+    "BARS=$(seq -s '━' $(($VOL * " stringify(BAR_LENGTH) " / 100)) | sed 's/[0-9]//g') && "\
+    "notify-send -i NONE -r 9999 -t 800 '🔊' \"$BARS\" -h string:synchronous:volume", NULL };
+
+static const char *volume_down[] = { "/bin/sh", "-c",
+    "pactl set-sink-volume @DEFAULT_SINK@ -" VOLUME_STEP "% && "\
+    "VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]{1,3}(?=%)' | head -1) && "\
+    "BARS=$(seq -s '━' $(($VOL * " stringify(BAR_LENGTH) " / 100)) | sed 's/[0-9]//g') && "\
+    "notify-send -i NONE -r 9999 -t 800 '🔊' \"$BARS\" -h string:synchronous:volume", NULL };
 
 
-static const char *volume_up[]          = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
-static const char *volume_down[]        = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
-static const char *volume_toggle[]      = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *volume_toggle[] = { "/bin/sh", "-c",
+   "pactl set-sink-mute @DEFAULT_SINK@ toggle && "\
+   "MUTED=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -Po '(?<=Mute: )(yes|no)') && "\
+   "[ $MUTED = 'yes' ] && notify-send -i NONE -r 9999 -t 800 '🔇' 'Muted' -h string:synchronous:volume || "\
+   "VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]{1,3}(?=%)' | head -1) && "\
+   "BARS=$(seq -s '━' $(($VOL * " stringify(BAR_LENGTH) " / 100)) | sed 's/[0-9]//g') && "\
+   "notify-send -i NONE -r 9999 -t 800 '🔊' \"$BARS\" -h string:synchronous:volume", NULL };
+
+static const char *brightness_up[] = { "/bin/sh", "-c",
+   "brightnessctl set +" BRIGHTNESS_STEP "% && "\
+   "BRIGHT=$(brightnessctl info | grep -oP '(?<=\\(|\\s)\\d+(?=%)') && "\
+   "BARS=$(seq -s '━' $(($BRIGHT * " stringify(BAR_LENGTH) " / 100)) | sed 's/[0-9]//g') && "\
+   "notify-send -i NONE -r 9998 -t 800 '🔆' \"$BARS\" -h string:synchronous:brightness", NULL };
+
+static const char *brightness_down[] = { "/bin/sh", "-c",
+   "brightnessctl set " BRIGHTNESS_STEP "%- && "\
+   "BRIGHT=$(brightnessctl info | grep -oP '(?<=\\(|\\s)\\d+(?=%)') && "\
+   "BARS=$(seq -s '━' $(($BRIGHT * " stringify(BAR_LENGTH) " / 100)) | sed 's/[0-9]//g') && "\
+   "notify-send -i NONE -r 9998 -t 800 '🔆' \"$BARS\" -h string:synchronous:brightness", NULL };
+
+
 static const char *kbd_brightness_up[]  = { "bash", "-c", 
     "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); max=$(cat /sys/class/leds/tpacpi::kbd_backlight/max_brightness); if [ $cur -lt $max ]; then echo $((cur+1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
+
+
 static const char *kbd_brightness_down[] = { "bash", "-c", 
     "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); if [ $cur -gt 0 ]; then echo $((cur-1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
 
