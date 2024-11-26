@@ -65,6 +65,13 @@ static const char unknown_str[] = "n/a";
  */
 
 
+static const char *colors[] = {
+    "#ebcb8b", /* default color (warm yellow) */
+    "#bf616a", /* error color (muted red) */
+};
+
+
+
 static const struct arg args[] = {
     /* function format          argument */
     // { run_command, "| 🎧 %s ", "amixer sget Master | tail -1 | awk '{print $5 }' | sed 's@\\(\\[\\|\\]\\)@@g'" },	
@@ -72,7 +79,7 @@ static const struct arg args[] = {
     // { ram_perc,    "[🚀 %s%%] ",   NULL },
     { battery_perc, "| %s%% ", "BAT0" },
     { battery_state, "%s |", "BAT0" },
-    // { wifi_essid,  "[🛜 %s] ",      "wlp0s20f3" },
+    { wifi_essid,  " 🛜 %s | ",      "wlp0s20f3" },
     // { netspeed_rx, "[🔻 %sB/s] ",   "wlp0s20f3" },
     // { netspeed_tx, "[🔺 %sB/s] ",   "wlp0s20f3" },
     { datetime,    " 📅 %s ", "%T" } // %F
