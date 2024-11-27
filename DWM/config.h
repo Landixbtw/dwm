@@ -69,6 +69,12 @@ static const char *termcmd[]  = { "ghostty", NULL };
 static const char *flameshotcmd[] = {"flameshot", "gui", "-c", "-p", "/home/ole/Pictures/" ,NULL};
 static const char *webbrowsercmd[] = { "chromium" , NULL };
 
+static const char *lockcmd[] = { "/bin/sh", "-c",
+    "wallpaper=$(grep '^file=' ~/.config/nitrogen/bg-saved.cfg | cut -d'=' -f2); "
+    "convert \"$wallpaper\" -resize '1920x1200^' -gravity center -extent '1920x1200' ~/.cache/lockscreen/i3lock.png & "
+    "i3lock -i ~/.cache/lockscreen/i3lock.png" 
+};
+
 
 /* Your volume and brightness commands */
 /* Volume control */
@@ -98,6 +104,7 @@ static const char *volume_down[] = { "/bin/sh", "-c",
     "fi && "
     "notify-send -i $ICON -r 9999 -t 500 'Volume' \"$FILLED$EMPTY $VOL%\"", NULL 
 };
+
 
 
 static const char *volume_toggle[] = { "/bin/sh", "-c", 
@@ -156,6 +163,7 @@ static const Key keys[] = {
 	// { ControlMask ,                 XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY| ShiftMask,            XK_l,        spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_k,      killclient,     {0} },
