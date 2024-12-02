@@ -8,8 +8,8 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "GeistMono NF:size=12", "JetBrainsMonoNL NFM:size=12" };
-static const char dmenufont[]       = "GeistMono NF:size=12";
+static const char *fonts[]          = { "GeistMono NF:size=13", "JetBrainsMonoNL NFM:size=13" };
+static const char dmenufont[]       = "GeistMono NF:size=13";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -63,8 +63,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "ghostty", NULL };
-// static const char *termcmd[]  = { "st", NULL };
+// static const char *termcmd[]  = { "ghostty", NULL };
+static const char *termcmd[]  = { "st", NULL };
 // static const char *termcmd[]  = { "wezterm", NULL };
 static const char *flameshotcmd[] = {"flameshot", "gui", "-c", "-p", "/home/ole/Pictures/" ,NULL};
 static const char *webbrowsercmd[] = { "chromium" , NULL };
@@ -148,7 +148,7 @@ static const char *kbd_brightness_up[]  = { "bash", "-c",
 static const char *kbd_brightness_down[] = { "bash", "-c", 
     "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); if [ $cur -gt 0 ]; then echo $((cur-1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
 
-static const char *roficmd[] = { "rofi", "-show", "drun", "-show-icons" };
+static const char *roficmd[] = { "rofi", "-show", "drun", "-show-icons"};
 
 
 static const Key keys[] = {
