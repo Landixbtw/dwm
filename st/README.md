@@ -10,9 +10,9 @@ My very simple fork of st, comes with no guarantees or warranties <sub>(to be cl
 ## other stuff
 * If you aren't using ```~/.Xresources``` or [pywal](https://github.com/dylanaraps/pywal), default color palette is [Nord](https://www.nordtheme.com/).
 * Read or change keybinds, default font/size, etc. in **config.h** - I'll update the man page at some point. Bindings are what you'd expect, besides:
-  - ```alt + c``` & ```alt + v``` for copy-paste
-  - ```alt + a``` & ```alt + s``` to increase and decrease alpha (transparency) respectively
-  - ```alt + shift + k``` & ```alt + shift + j``` to increase and decrease font size, respectively
+  - ```Mod4Mask + c``` & ```Mod4Mask + v``` for copy-paste
+  - ```Mod4Mask + a``` & ```Mod4Mask + s``` to increase and decrease alpha (transparency) respectively
+  - ```Mod4Mask + plus``` & ```Mod4Mask + minus``` to increase and decrease font size, respectively
 
 ## how install pls?
 ```
