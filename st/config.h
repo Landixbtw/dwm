@@ -6,7 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 // static char *font = "mono:pixelsize=17:antialias=true:autohint=true";
-static char *font = "MartianMono Nerd Font:pixelsize=18:antialias=true:autohint=true";
+static char *font = "MartianMono Nerd Font:style=Bold:pixelsize=19:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -66,7 +66,7 @@ static unsigned int blinktimeout = 800;
 /*
  * thickness of underline and bar cursors
  */
-static unsigned int cursorthickness = 2;
+static unsigned int cursorthickness = 1;
 
 /*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
@@ -104,30 +104,53 @@ float alpha_def;
 static const char *colorname[] = {
 // Nord Color Scheme
 	/* 8 normal colors */
-	"#3b4252", /* black   */
-	"#bf616a", /* red     */
-	"#a3be8c", /* green   */
-	"#ebcb8b", /* yellow  */
-	"#81a1c1", /* blue    */
-	"#b48ead", /* magenta */
-	"#88c0d0", /* cyan    */
-	"#e5e9f0", /* white   */
+	// "#3b4252", /* black   */
+	// "#bf616a", /* red     */
+	// "#a3be8c", /* green   */
+	// "#ebcb8b", /* yellow  */
+	// "#81a1c1", /* blue    */
+	// "#b48ead", /* magenta */
+	// "#88c0d0", /* cyan    */
+	// "#e5e9f0", /* white   */
+	//
+	// /* 8 bright colors */
+	// "#4c566a", /* black   */
+	// "#bf616a", /* red     */
+	// "#a3be8c", /* green   */
+	// "#ebcb8b", /* yellow  */
+	// "#81a1c1", /* blue    */
+	// "#b48ead", /* magenta */
+	// "#8fbcbb", /* cyan    */
+	// "#eceff4", /* white   */
 
-	/* 8 bright colors */
-	"#4c566a", /* black   */
-	"#bf616a", /* red     */
-	"#a3be8c", /* green   */
-	"#ebcb8b", /* yellow  */
-	"#81a1c1", /* blue    */
-	"#b48ead", /* magenta */
-	"#8fbcbb", /* cyan    */
-	"#eceff4", /* white   */
+    // normal colors
+    "#454240", // black
+    "#D13438", // red
+    "#73A857", /* green */
+    "#F1C232", /* yellow */
+    "#5A8CA5", /* blue */
+    "#A066C9", /* magenta */
+    "#46B9A0", /* cyan */
+    "#AA9E87", /* white */
+
+    /* 8 bright colors */
+    "#614A4D", /* black */
+    "#FF5F56", /* red */
+    "#88C070", /* green */
+    "#FADF60", /* yellow */
+    "#73B3D8", /* blue */
+    "#B794F4", /* magenta */
+    "#6FE2CA", /* cyan */
+    "#F6E8CD", /* white */
+
 
 	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
-	"#FFFFFF", /* default background colour */
-	"#000000", /* default foreground colour */
+	// "#FFFFFF", /* default background colour */
+	// "#000000", /* default foreground colour */
+    "#F4E3C1",
+    "#1C1B1A",
 };
 
 
@@ -147,7 +170,7 @@ static unsigned int defaultrcs = 257;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 6;
+static unsigned int cursorshape = 2;
 
 /*
  * Default columns and rows numbers
