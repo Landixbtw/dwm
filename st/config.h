@@ -95,7 +95,9 @@ char *termname = "st-256color";
 unsigned int tabspaces = 4;
 
 /* bg opacity */
+// float alpha = 0.95;
 float alpha = 1;
+
 
 /* Background opacity */
 float alpha_def;
@@ -225,7 +227,7 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ ControlMask,          XK_plus,           zoom,           {.f = +1} },
+	{ ControlMask,          XK_plus,           zoom,           {.f = +5} },
 	{ ControlMask,          XK_minus,           zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ ControlMask | ShiftMask,               XK_C,           clipcopy,       {.i =  0} },
@@ -237,7 +239,7 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 	{ MODKEY,               XK_a,           chgalpha,       {.f = -1} },
 	{ MODKEY,               XK_s,           chgalpha,       {.f = +1} },
-	{ MODKEY,               XK_d,           chgalpha,       {.f =  0} },
+	{ MODKEY,               XK_r,           chgalpha,       {.f =  0} },
 };
 
 /*

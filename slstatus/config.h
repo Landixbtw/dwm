@@ -82,5 +82,5 @@ static const struct arg args[] = {
     { wifi_essid,  " 🛜 %s | ",      "wlp0s20f3" },
     // { netspeed_rx, "[🔻 %sB/s] ",   "wlp0s20f3" },
     // { netspeed_tx, "[🔺 %sB/s] ",   "wlp0s20f3" },
-    { datetime,    " 📅 %s ", "%T" } // %F
+    { datetime,    " 📅 %s ", "%T %d/%m/%Y" } // %F
 };
