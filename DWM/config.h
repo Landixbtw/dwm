@@ -65,9 +65,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "ghostty", NULL };
 // static const char *termcmd[]  = { "st", NULL };
-// static const char *termcmd[]  = { "wezterm", NULL };
+// static const char *termcmd[]  = { "alacritty", NULL };
 static const char *flameshotcmd[] = {"flameshot", "gui", "-c", "-p", "/home/ole/Pictures/" ,NULL};
-static const char *webbrowsercmd[] = { "chromium" , NULL };
+static const char *webbrowsercmd[] = { "brave" , NULL };
 
 static const char *lockcmd[] = { "/bin/sh", "-c",
     "wallpaper=$(grep '^file=' ~/.config/nitrogen/bg-saved.cfg | cut -d'=' -f2); "
@@ -148,6 +148,8 @@ static const char *kbd_brightness_up[]  = { "bash", "-c",
 static const char *kbd_brightness_down[] = { "bash", "-c", 
     "cur=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness); if [ $cur -gt 0 ]; then echo $((cur-1)) > /sys/class/leds/tpacpi::kbd_backlight/brightness; fi", NULL };
 
+static const char *dispcmd[] = { "/home/ole/.local/bin/displayselect.sh", NULL };
+
 static const char *roficmd[] = { "rofi", "-show", "drun", "-show-icons"};
 
 
@@ -156,6 +158,7 @@ static const Key keys[] = {
 	// { MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = roficmd} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY, 			XK_p,	   spawn, 	  {.v = dispcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ ControlMask,                  XK_k,      focusstack,     {.i = -1 } },
@@ -179,7 +182,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
     { MODKEY|ShiftMask,             XK_s,       spawn,          {.v = flameshotcmd } },
-    { MODKEY,                       XK_f,       spawn,          {.v = webbrowsercmd } },
+    /* { MODKEY,                       XK_f,       spawn,          {.v = webbrowsercmd } }, */
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
